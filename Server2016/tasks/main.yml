@@ -1,31 +1,23 @@
----
- - name: Ansible Windows OS hardening 
-   remote_user: Administrator # local Windows user to connect with
-   hosts: windows # remote host group
-   tasks:
-    
-    - name: Copy folder to C:\Temp (results in C:\Temp\powershell)
-      win_copy:
-      src: files/powershell
-      dest: C:\Temp\powershell
-    
-    - name: Disable Online Tips
-      win_shell: C:\Temp\powershell\disabletips.ps1
-    
-    - name: Set NetBIOS node type to P-node
-	win_shell: C:\Temp\powershell\netbiostype.ps1
-    
-    - name: Remote host allows delegation of non-exportable credentials is set to enabled
-	win_shell: C:\Temp\powershell\creddelegation.ps1
-    
-    - name: Enable Disable Authenticated Proxy usage for connected user experience and Telemetry service
-	win_shell: C:\Temp\powershell\connecteduserexp.ps1
-    
-    - name: Ensure Allow Message Service Cloud Sync is set to Disabled
-	win_shell: C:\Temp\powershell\disablecloudsync.ps1
-    
-    - name: Block all consumer Microsoft account user authentication is set to Enabled
-	win_shell: C:\Temp\powershell\blockconsumermicrosoftaccount.ps1
-    
-    - name: Allow Cloud Search is set to disabled
-	win_shell: C:\Temp\powershell\disablecloudsearch.ps1
+- name: Disable the online tips
+  hosts: windows
+  tasks:
+    - name: Run a script
+      win_shell: "{{ lookup('file', '~/Server2016/files/disabletips.ps1')}}"
+
+    - name: Run a script
+      win_shell: "{{ lookup('file', '~/Server2016/files/changenetbiosnodetype.ps1')}}"
+
+    - name: Run a script
+      win_shell: "{{ lookup('file', '~/Server2016/files/creddelegation.ps1')}}"
+
+    - name: Run a script
+      win_shell: "{{ lookup('file', '~/Server2016/files/connecteduserexp.ps1')}}"
+
+    - name: Run a script
+      win_shell: "{{ lookup('file', '~/Server2016/files/disablecloudsync.ps1')}}"
+
+    - name: Run a script
+      win_shell: "{{ lookup('file', '~/Server2016/files/blockconsumermicrosoftaccount.ps1')}}"
+
+    - name: Run a script
+      win_shell: "{{ lookup('file', '~/Server2016/files/disablecloudsearch.ps1')}}"
